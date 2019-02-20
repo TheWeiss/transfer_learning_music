@@ -141,10 +141,10 @@ def get_convBNeluMPdrop(num_conv_layers, nums_feat_maps, feat_scale_factor,
     input_shape_specified = False
     if conv_until is None:
         conv_until = num_conv_layers  # end-inclusive.
-    for conv_idx in xrange(num_conv_layers):
+    for conv_idx in range(num_conv_layers):
         # add conv layer
         n_feat_here = int(nums_feat_maps[conv_idx] * feat_scale_factor)
-        for _ in xrange(num_nin_layers):
+        for _ in range(num_nin_layers):
             if not input_shape_specified:
                 model.add(Convolution2D(n_feat_here, conv_sizes[conv_idx][0], conv_sizes[conv_idx][1],
                                         input_shape=input_shape,

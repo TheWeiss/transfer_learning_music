@@ -8,7 +8,6 @@ import keras
 import kapre
 import multiprocessing
 
-
 SR = 12000  # [Hz]
 LEN_SRC = 29.  # [second]
 ref_n_src = 12000 * 29
@@ -20,13 +19,15 @@ if keras.__version__[0] != '1':
 def load_model(mid_idx):
     """Load one model and return it"""
     assert 0 <= mid_idx <= 4
-    args = Namespace(test=False, data_percent=100, model_name='', tf_type='melgram',
+    args = Namespace(test=False, data_percent=100, model_name='',
+                     tf_type='melgram',
                      normalize='no', decibel=True, fmin=0.0, fmax=6000,
                      n_mels=96, trainable_fb=False, trainable_kernel=False,
                      conv_until=mid_idx)
     model = build_convnet_model(args, last_layer=False)
-    model.load_weights('weights_transfer/weights_layer{}_{}.hdf5'.format(mid_idx, K._backend),
-                       by_name=True)
+    model.load_weights(
+        'weights_transfer/weights_layer{}_{}.hdf5'.format(mid_idx, K._backend),
+        by_name=True)
     return model
 
 
@@ -70,11 +71,12 @@ def predict_cpu(f_path, models, n_jobs):
 
 
 def main(txt_path, out_path, n_jobs=1):
-    models = [load_model(mid_idx) for mid_idx in range(5)]  # for five models...
+    models = [load_model(mid_idx) for mid_idx in
+              range(5)]  # for five models...
     all_features = []
-    with open(txt_path) as f_path:    
+    with open(txt_path) as f_path:
         all_features = predict_cpu(f_path, models, n_jobs)
-    
+
     print('Saving all features at {}..'.format(out_path))
     np.save(out_path, all_features)
     print('Done. Saved a numpy array size of (%d, %d)' % all_features.shape)
@@ -89,7 +91,6 @@ def warning():
     print('')
     print('   Usage: set path file, numpy file, and n_jobs >= 1')
     print('$ python easy_feature_extraction.py audio_paths.txt features.npy 8')
-    print ''
     print('    , where audio_path.txt is for paths audio line-by-line')
     print('    and features.npy is the path to store result feature array.')
     print('-' * 65)
