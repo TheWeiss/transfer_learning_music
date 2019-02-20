@@ -12,9 +12,6 @@ SR = 12000  # [Hz]
 LEN_SRC = 29.  # [second]
 ref_n_src = 12000 * 29
 
-if keras.__version__[0] != '1':
-    raise RuntimeError('Keras version should be 1.x, maybe 1.2.2')
-
 
 def load_model(mid_idx):
     """Load one model and return it"""
